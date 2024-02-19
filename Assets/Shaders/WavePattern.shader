@@ -54,11 +54,6 @@ Shader "Unlit/WavePattern"
                 return o;
             }
 
-            float InverseLerp(float a, float b, float v)
-            {
-                return (v-a)/(b-a);
-            }
-
             fixed4 frag (Interpolators i) : SV_Target
             {
                 float yOffset = cos(i.uv.x * TAU * 8) * 0.01;
