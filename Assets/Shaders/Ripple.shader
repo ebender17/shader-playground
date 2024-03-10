@@ -42,14 +42,14 @@ Shader "Unlit/Ripple"
                 float2 uvsCentered = uv * 2 - 1; // range of -1 to 1
                 float radialDistance = length(uvsCentered);
                 float wave = cos((radialDistance - _Time.y * _Speed) * TAU * 5) * 0.5 + 0.5;
-                wave *= 1 - radialDistance; // fade towards the edges
+                wave *= saturate(1 - radialDistance); // fade towards the edges
                 return wave;
             }
 
             Interpolators vert (MeshData v)
             {
                 Interpolators o;
-                v.vertex.y = GetWave(v.uv0);
+                // v.vertex.y = GetWave(v.uv0);
                 o.vertex = UnityObjectToClipPos(v.vertex); // local space to clip space
                 o.uv = v.uv0;
                 return o;
