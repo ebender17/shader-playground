@@ -4,6 +4,7 @@ Shader "Unlit/Lighting"
     {
         _Albedo("Albedo", 2D) = "white" {}
         [NoScaleOffset] _NormalMap("NormalMap", 2D) = "bump" {}
+        _NormalIntensity("Normal Intensity", Range(0, 0.2)) = 0.1
         _Color("Color", Color) = (1, 1, 1, 1)
         _Gloss("Gloss", Range(0, 1)) = 1
     }
@@ -23,6 +24,7 @@ Shader "Unlit/Lighting"
 
             sampler2D _Albedo;
             sampler2D _NormalMap;
+            float _NormalIntensity;
             float4 _Albedo_ST;
             float4 _Color;
             float _Gloss;
@@ -64,6 +66,8 @@ Shader "Unlit/Lighting"
                 float3 surfaceColor = albedo * _Color.rgb;
 
                 float3 tangentSpaceNormal = UnpackNormal(tex2D(_NormalMap, i.uv));
+                tangentSpaceNormal = normalize(lerp(float3(0, 0, 1), tangentSpaceNormal, _NormalIntensity));
+
                 float3x3 mtxTangentToWorld = {
                     i.tangent.x, i.bitangent.x, i.normal.x,
                     i.tangent.y, i.bitangent.y, i.normal.y,
